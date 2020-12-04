@@ -8,8 +8,8 @@ import (
 )
 
 type Rule struct {
-	minRepetitions    int
-	maxRepetitions    int
+	firstReq          int
+	secondReq         int
 	requiredCharacter string
 }
 
@@ -26,13 +26,14 @@ func CountValidPasswords(passwords []string) int {
 
 func IsValidPassword(passwordLine string) (bool, error) {
 	rule, password, err := ExtractRuleAndPassword(passwordLine)
-	if err != nil {
+	if err != nil || len(password) < rule.secondReq {
 		return false, errors.New("Not valid password")
 	}
 
-	repetitionsOfRequiredCharacter := strings.Count(password, rule.requiredCharacter)
+	firstCondition := string(password[rule.firstReq-1]) == rule.requiredCharacter && string(password[rule.secondReq-1]) != rule.requiredCharacter
+	secondCondition := string(password[rule.firstReq-1]) != rule.requiredCharacter && string(password[rule.secondReq-1]) == rule.requiredCharacter
 
-	if repetitionsOfRequiredCharacter >= rule.minRepetitions && repetitionsOfRequiredCharacter <= rule.maxRepetitions {
+	if firstCondition || secondCondition {
 		return true, nil
 	}
 
@@ -52,13 +53,13 @@ func ExtractRuleAndPassword(passwordLine string) (Rule, string, error) {
 
 	ruleFields := strings.Split(passwordFields[0], " ")
 	limits := strings.Split(ruleFields[0], "-")
-	minRepetitions, _ := strconv.Atoi(limits[0])
-	maxRepetitions, _ := strconv.Atoi(limits[1])
+	firstReq, _ := strconv.Atoi(limits[0])
+	secondReq, _ := strconv.Atoi(limits[1])
 	requiredCharacter := ruleFields[1]
 
 	return Rule{
-		minRepetitions,
-		maxRepetitions,
+		firstReq,
+		secondReq,
 		requiredCharacter,
 	}, password, nil
 }

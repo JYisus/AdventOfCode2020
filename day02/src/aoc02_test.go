@@ -36,12 +36,12 @@ func TestExtractRuleAndPassword(t *testing.T) {
 	}{
 		"a password that requires 1 to 2 'a' and have an 'a' return the rule and the password": {
 			input:        "1-2 a: abcde",
-			wantRule:     Rule{minRepetitions: 1, maxRepetitions: 2, requiredCharacter: "a"},
+			wantRule:     Rule{firstReq: 1, secondReq: 2, requiredCharacter: "a"},
 			wantPassword: "abcde",
 			err:          nil},
 		"a password that requires 1 to 3 'a' and have an 'a' return the rule and the password": {
 			input:        "2-3 b: abcde",
-			wantRule:     Rule{minRepetitions: 2, maxRepetitions: 3, requiredCharacter: "b"},
+			wantRule:     Rule{firstReq: 2, secondReq: 3, requiredCharacter: "b"},
 			wantPassword: "abcde",
 			err:          nil},
 		"a password with no requirements returns an error": {
@@ -86,12 +86,12 @@ func TestIsValidPassword(t *testing.T) {
 		want  bool
 		err   error
 	}{
-		"a password that requires 1 to 2 'a' and have an 'a' is valid": {
-			input: "1-2 a: abcde",
+		"a valid password that requires 'a'just in position 1 or just in pos 3": {
+			input: "1-3 a: abcdeaaa",
 			want:  true,
 			err:   nil,
 		},
-		"a password that requires 1 to 2 'a' and have more 'a' is not valid": {
+		"an invalid password that requires 'a' just in position 1 or just in pos 2": {
 			input: "1-2 a: aaabcde",
 			want:  false,
 			err:   nil,
@@ -143,11 +143,11 @@ func TestCountValidPasswords(t *testing.T) {
 				"1-3 b: cdefg",
 				"2-9 c: ccccccccc",
 			},
-			want: 2,
+			want: 1,
 		},
 		"real dataset": {
 			input: getRealDataset(),
-			want:  458,
+			want:  342,
 		},
 	}
 
