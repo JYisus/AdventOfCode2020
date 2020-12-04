@@ -1,4 +1,4 @@
-package main
+package day01
 
 import (
 	"bufio"
@@ -20,7 +20,7 @@ var exampleTestValues = []int{
 }
 
 func getRealDataset() []int {
-	const DatasetPath string = "../data.txt"
+	const DatasetPath string = "data.txt"
 
 	f, _ := os.Open(DatasetPath)
 

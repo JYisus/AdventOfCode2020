@@ -1,4 +1,4 @@
-module adventOfCode01
+module adventOfCode2020
 
 go 1.15
 

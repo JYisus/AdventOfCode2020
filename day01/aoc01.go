@@ -1,8 +1,6 @@
-package main
+package day01
 
 import (
-	"log"
-
 	"github.com/pkg/errors"
 )
 
@@ -31,8 +29,4 @@ func FindNumbers(data []int) ([]int, error) {
 	}
 
 	return nil, errors.Errorf("Not valid input")
-}
-
-func main() {
-	log.Println("Hello wdorld")
 }
