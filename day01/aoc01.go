@@ -10,7 +10,7 @@ func AoC01(data []int) (int, error) {
 		return 0, err
 	}
 
-	return numbers[0] * numbers[1], err
+	return numbers[0] * numbers[1] * numbers[2], err
 }
 
 func FindNumbers(data []int) ([]int, error) {
@@ -21,8 +21,14 @@ func FindNumbers(data []int) ([]int, error) {
 
 	for i := 0; i < len(data); i++ {
 		for j := 0; j < len(data) && i != j; j++ {
-			if data[i]+data[j] == 2020 {
-				return []int{data[i], data[j]}, nil
+			sum := data[i] + data[j]
+			if sum > 2020 {
+				continue
+			}
+			for k := 0; k < len(data) && i != k && j != k; k++ {
+				if sum+data[k] == 2020 {
+					return []int{data[i], data[j], data[k]}, nil
+				}
 			}
 		}
 
