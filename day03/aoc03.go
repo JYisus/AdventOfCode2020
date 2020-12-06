@@ -6,7 +6,7 @@ import (
 
 type Step struct {
 	right int
-	above int
+	down  int
 }
 
 type Position struct {
@@ -14,13 +14,23 @@ type Position struct {
 	row    int
 }
 
-func CountTreesInSlope(mapOfTrees string) (int, error) {
+func AoC03(mapOfTrees string, slopes []Step) (int, error) {
+
+	result := 1
+
+	for _, step := range slopes {
+		trees, _ := CountTreesInSlope(mapOfTrees, step)
+		result *= trees
+	}
+
+	return result, nil
+}
+
+func CountTreesInSlope(mapOfTrees string, step Step) (int, error) {
 	grid := strings.Split(mapOfTrees, "\n")
 
 	gridRows := len(grid)
 	gridColumns := len(grid[0])
-
-	step := Step{right: 3, above: 1}
 
 	actualPosition := Position{column: 0, row: 0}
 
@@ -33,7 +43,7 @@ func CountTreesInSlope(mapOfTrees string) (int, error) {
 		}
 		actualPosition = Position{
 			column: actualPosition.column + step.right,
-			row:    actualPosition.row + step.above,
+			row:    actualPosition.row + step.down,
 		}
 	}
 
